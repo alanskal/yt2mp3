@@ -1,6 +1,6 @@
 # yt2mp3
 
-Petit outil en ligne de commande pour télécharger l'audio d'une vidéo YouTube en MP3, avec estimation du BPM et de la clé/gamme — pratique pour choper des prods/instrus gratuites et les intégrer dans des maquettes.
+Petit outil en ligne de commande pour télécharger l'audio d'une vidéo YouTube en MP3, avec estimation du BPM et de la clé/gamme 
 
 ## Prérequis
 
