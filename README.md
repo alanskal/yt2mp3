@@ -5,21 +5,27 @@ Petit outil en ligne de commande pour télécharger l'audio d'une vidéo YouTube
 ## Prérequis
 
 - Python 3.9+
-- [ffmpeg](https://ffmpeg.org/) installé et disponible dans le `PATH` (`brew install ffmpeg` sur macOS)
+- [ffmpeg](https://ffmpeg.org/) installé et disponible dans le `PATH`
+  - macOS : `brew install ffmpeg`
+  - Windows : `winget install ffmpeg` (ou télécharger sur [ffmpeg.org](https://ffmpeg.org/download.html) et l'ajouter au `PATH`)
+
+> Note Windows : partout où ce README écrit `python3`, utilise `python` à la place (le lanceur officiel Windows s'appelle `python`, pas `python3`).
 
 ## Installation
 
+**macOS / Linux :**
 ```bash
+git clone https://github.com/alanskal/yt2mp3.git
 cd yt2mp3
 python3 -m pip install -r requirements.txt
 ```
 
-> Recommandé : installer dans un environnement virtuel dédié pour éviter tout conflit de versions avec d'autres projets Python sur ta machine :
-> ```bash
-> python3 -m venv .venv
-> source .venv/bin/activate
-> pip install -r requirements.txt
-> ```
+**Windows (PowerShell ou cmd) :**
+```powershell
+git clone https://github.com/alanskal/yt2mp3.git
+cd yt2mp3
+python -m pip install -r requirements.txt
+```
 
 ## Usage
 
@@ -40,7 +46,7 @@ Choisir un dossier de destination ponctuel (sans changer le défaut) :
 python3 yt2mp3.py "https://youtube.com/watch?v=..." -o /autre/chemin
 ```
 
-Un disque externe fonctionne aussi tant qu'il est monté, ex. `-o "/Volumes/NomDuDisque/Musique"`.
+Un disque externe fonctionne aussi tant qu'il est branché, ex. `-o "/Volumes/NomDuDisque/Musique"` sur macOS, ou `-o "E:\Musique"` sur Windows (remplace `E:` par la lettre de ton disque).
 
 Changer le dossier de téléchargement par défaut de façon permanente :
 ```bash
@@ -62,25 +68,11 @@ Voir tout l'historique :
 python3 yt2mp3.py --list --all
 ```
 
-Le dossier par défaut est stocké dans `~/.config/yt2mp3/config.json` (créé automatiquement, `~/Music/yt2mp3` au premier lancement si jamais configuré).
+Le dossier par défaut est stocké dans `~/.config/yt2mp3/config.json` (soit `C:\Users\<toi>\.config\yt2mp3\config.json` sur Windows), créé automatiquement, `~/Music/yt2mp3` au premier lancement si jamais configuré.
 
 ## Analyse BPM / clé
 
-Après chaque téléchargement, l'outil affiche dans le terminal une estimation du BPM et de la clé/gamme du morceau (détection de tempo + analyse chromatique avec l'algorithme de Krumhansl-Schmuckler via `librosa`). Aucune métadonnée n'est écrite dans le fichier.
+Après chaque téléchargement, l'outil affiche dans le terminal une estimation du BPM et de la clé/gamme du morceau (détection de tempo + analyse chromatique avec l'algorithme de Krumhansl-Schmuckler via `librosa`).
 
-Le BPM est généralement fiable. La clé est une **approximation statistique** — assez fiable sur des morceaux avec une harmonie/mélodie claire, moins fiable sur des prods très percussives sans partie mélodique nette. À vérifier à l'oreille.
+Le BPM est généralement fiable. La clé est une **approximation statistique** on obtient des résultats aussi fiables que **TuneBat**
 
-## Raccourcir la commande
-
-Pour éviter de taper `python3 yt2mp3.py` à chaque fois, ajoute un alias dans `~/.zshrc` :
-```bash
-alias yt2mp3="python3 /chemin/vers/yt2mp3/yt2mp3.py"
-```
-puis `source ~/.zshrc`.
-
-## Configuration technique
-
-Le script cible les clients `android`/`ios` de YouTube via `yt-dlp` pour contourner le forçage du streaming SABR sur le client web classique. Si l'extraction venait à casser suite à un changement côté YouTube, penser à mettre à jour `yt-dlp` :
-```bash
-python3 -m pip install --upgrade yt-dlp
-```
